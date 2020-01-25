@@ -18,20 +18,22 @@ type Context
 
 rule : Rule
 rule =
-    Rule.newSchema "NoUsingHtmlButton"
-        |> Rule.withInitialContext
-            (ForbiddenToUseHtmlButton
-                { hasImportedButtonInGlobalScope = False
-                , htmlModules =
-                    [ [ "Html" ]
-                    , [ "Html", "Styled" ]
-                    ]
-                }
-            )
+    Rule.newModuleRuleSchema "NoUsingHtmlButton" initialContext
         |> Rule.withImportVisitor importVisitor
         |> Rule.withModuleDefinitionVisitor moduleDefinitionVisitor
         |> Rule.withExpressionVisitor expressionVisitor
-        |> Rule.fromSchema
+        |> Rule.fromModuleRuleSchema
+
+
+initialContext : Context
+initialContext =
+    ForbiddenToUseHtmlButton
+        { hasImportedButtonInGlobalScope = False
+        , htmlModules =
+            [ [ "Html" ]
+            , [ "Html", "Styled" ]
+            ]
+        }
 
 
 moduleDefinitionVisitor : Node Module -> Context -> ( List Error, Context )

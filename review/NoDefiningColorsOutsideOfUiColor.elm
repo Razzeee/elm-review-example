@@ -29,11 +29,10 @@ type Context
 
 rule : Rule
 rule =
-    Rule.newSchema "NoDefiningColorsOutsideOfUiColor"
-        |> Rule.withInitialContext ForbiddenToDefineColors
+    Rule.newModuleRuleSchema "NoDefiningColorsOutsideOfUiColor" ForbiddenToDefineColors
         |> Rule.withModuleDefinitionVisitor moduleDefinitionVisitor
         |> Rule.withExpressionVisitor expressionVisitor
-        |> Rule.fromSchema
+        |> Rule.fromModuleRuleSchema
 
 
 moduleDefinitionVisitor : Node Module -> context -> ( List Error, Context )
